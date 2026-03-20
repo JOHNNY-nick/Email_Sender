@@ -1,0 +1,172 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f5ff;
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px;
+  min-height: 100vh;
+}
+
+.page {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 2px 12px rgba(37,99,235,.07);
+}
+
+.logo { display: flex; align-items: center; gap: 10px; }
+
+.logo-box {
+  width: 38px; height: 38px;
+  background: #2563eb;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.logo-box svg { width: 20px; height: 20px; }
+.logo-text { font-size: 18px; font-weight: 700; color: #1e3a8a; letter-spacing: -.02em; }
+.logo-text span { color: #2563eb; }
+
+.badge {
+  font-size: 11px; font-weight: 600;
+  background: #eff6ff; color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  padding: 4px 12px; border-radius: 99px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  overflow: hidden;
+}
+
+.card-top {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.card-top-icon {
+  width: 30px; height: 30px;
+  background: #eff6ff; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.card-top-icon svg { width: 15px; height: 15px; }
+.card-top-title { font-size: 14px; font-weight: 700; color: #1e293b; }
+
+.card-body {
+  padding: 22px 24px 24px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+label { font-size: 12px; font-weight: 700; color: #475569; letter-spacing: .02em; }
+.opt { font-weight: 400; color: #94a3b8; margin-left: 4px; }
+
+input, textarea {
+  padding: 10px 13px;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #334155;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  width: 100%;
+}
+
+input:focus, textarea:focus {
+  border-color: #93c5fd;
+  background: white;
+}
+
+input::placeholder, textarea::placeholder { color: #cbd5e1; }
+textarea { height: 110px; resize: vertical; }
+
+.btn {
+  width: 100%; height: 44px;
+  background: #2563eb; color: white;
+  border: none; border-radius: 8px;
+  font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  cursor: pointer; transition: background .2s;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 6px;
+}
+
+.btn svg { width: 16px; height: 16px; }
+.btn:hover { background: #1d4ed8; }
+.btn:disabled { background: #93c5fd; cursor: not-allowed; }
+
+#message {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+}
+
+.msg-ok {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.msg-ko {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.hist-row {
+  padding: 12px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px;
+}
+
+.hist-row:last-child { border-bottom: none; }
+
+.hist-badge {
+  font-size: 11px; font-weight: 700;
+  padding: 2px 9px; border-radius: 99px; flex-shrink: 0;
+}
+
+.hist-badge.ok { background: #ecfdf5; color: #065f46; }
+.hist-badge.ko { background: #fef2f2; color: #991b1b; }
+
+.hist-to {
+  font-weight: 600; color: #1e3a8a;
+  max-width: 180px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+
+.hist-subj {
+  color: #94a3b8; flex: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.hist-time { font-size: 11px; color: #cbd5e1; flex-shrink: 0; }
+
+.hint {
+  font-size: 11px; color: #94a3b8;
+  text-align: center; padding: 20px;
+}

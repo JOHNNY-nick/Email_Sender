@@ -1,0 +1,5 @@
+.env
+email_sender_env/
+__pycache__/
+*.pyc
+email_service.log

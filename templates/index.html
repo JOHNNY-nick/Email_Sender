@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MailFlow</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="logo">
+      <div class="logo-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="3"/>
+          <path d="M2 8l10 6 10-6"/>
+        </svg>
+      </div>
+      <div class="logo-text">Mail<span>Flow</span></div>
+    </div>
+    <div class="badge">Python · Flask · SMTP</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="card-top-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+        </svg>
+      </div>
+      <div class="card-top-title">Nouveau message</div>
+    </div>
+
+    <div class="card-body">
+      <form id="emailForm">
+
+        <div class="row">
+          <div class="field">
+            <label for="to">Destinataire</label>
+            <input type="email" id="to" name="to" placeholder="jean@gmail.com" required>
+          </div>
+          <div class="field">
+            <label for="cc">Copie (cc) <span class="opt">optionnel</span></label>
+            <input type="text" id="cc" name="cc" placeholder="marie@gmail.com">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="subject">Sujet</label>
+          <input type="text" id="subject" name="subject" placeholder="Objet du message" required>
+        </div>
+
+        <div class="field">
+          <label for="body">Message</label>
+          <textarea id="body" name="body" placeholder="Écrivez votre message ici..." required></textarea>
+        </div>
+
+        <button type="submit" id="btnSend" class="btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          </svg>
+          Envoyer le message
+        </button>
+
+      </form>
+
+      <div id="message"></div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="card-top-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <div class="card-top-title">Historique des envois</div>
+    </div>
+    <div id="historique">
+      <p class="hint">Aucun email envoyé pour le moment.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const form       = document.getElementById('emailForm');
+  const message    = document.getElementById('message');
+  const historique = document.getElementById('historique');
+  const btnSend    = document.getElementById('btnSend');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const to      = document.getElementById('to').value;
+    const subject = document.getElementById('subject').value;
+
+    btnSend.textContent = 'Envoi en cours...';
+    btnSend.disabled    = true;
+    message.textContent = '';
+    message.className   = '';
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/send', { method: 'POST', body: formData });
+      const result   = await response.json();
+
+      if (result.success) {
+        message.textContent = 'Email envoyé avec succès !';
+        message.className   = 'msg-ok';
+        ajouterHistorique(to, subject, true);
+        form.reset();
+      } else {
+        message.textContent = 'Échec : ' + result.message;
+        message.className   = 'msg-ko';
+        ajouterHistorique(to, subject, false);
+      }
+
+    } catch (err) {
+      message.textContent = 'Erreur réseau.';
+      message.className   = 'msg-ko';
+    }
+
+    btnSend.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+      </svg>
+      Envoyer le message`;
+    btnSend.disabled = false;
+  });
+
+  function ajouterHistorique(to, subject, succes) {
+    const hint = historique.querySelector('.hint');
+    if (hint) hint.remove();
+
+    const heure = new Date().toLocaleTimeString('fr-FR', {
+      hour: '2-digit', minute: '2-digit'
+    });
+
+    const ligne = document.createElement('div');
+    ligne.className = 'hist-row';
+    ligne.innerHTML = `
+      <span class="hist-badge ${succes ? 'ok' : 'ko'}">${succes ? 'Envoyé' : 'Échec'}</span>
+      <span class="hist-to">${to}</span>
+      <span class="hist-subj">${subject || '(sans sujet)'}</span>
+      <span class="hist-time">${heure}</span>
+    `;
+    historique.prepend(ligne);
+  }
+</script>
+
+</body>
+</html>
