@@ -28,4 +28,4 @@ def send() :
             return jsonify({"success": False, "message": "Échec de l'envoi."})
 
 if	__name__	==	'__main__':
-app.run(host='0.0.0.0',	port=5000,	debug=True)
+    app.run(host='0.0.0.0',	port=5000,	debug=True)
